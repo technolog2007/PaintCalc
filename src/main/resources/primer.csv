@@ -1,0 +1,6 @@
+﻿workpiece material;paint material;material's component flag;material coefficient;work coefficient;solvent;coefficient1, %;hardener;coefficient2, %
+aluminum;primer 1K PBF Helios;1K;0.22;5;BA Helios;0.5;;
+stainless;primer 1K PBF Helios;1K;0.22;5;BA Helios;0.5;;
+carbon;primer 2K EZP Helios;2K;0.22;5;21-05 Helios;0.4;10-35 Helios;0.3
+plastic;primer DELTRON D820;N;0.08;5;;;;
+plastic;primer Novol Protect 300 with hardener H5520;N;0.2;5;;;;
