@@ -8,25 +8,29 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.workpiece.Material;
 import shpp.com.models.workpiece.RAL;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
+import shpp.com.services.PrintResult;
 import shpp.com.services.WorkpieceCreator;
+import shpp.com.services.calc.Calc;
+import shpp.com.services.calc.SchemaNormsCalc;
 
 @Slf4j
 public class Window {
 
   private JTextField coverageArea;
   private JTextField difficultFactor;
-  private JTextField result;
+  private JTextArea result;
   private JRadioButton shotBlasting;
   private JButton calculate;
-  private JComboBox<Material> comboBoxMaterial = new JComboBox<>(Material.values());
-  private JComboBox<RAL> comboBoxRal = new JComboBox<>(RAL.values());
-  private JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
+  private final JComboBox<Material> comboBoxMaterial = new JComboBox<>(Material.values());
+  private final JComboBox<RAL> comboBoxRal = new JComboBox<>(RAL.values());
+  private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
 
   private static final String FONT = "Arial";
 
@@ -74,6 +78,14 @@ public class Window {
     return textField;
   }
 
+  private JTextArea createTextArea(int x, int y, int width, int height, int fontSize,
+      String text) {
+    JTextArea textArea = new JTextArea(text);
+    textArea.setBounds(x, y, width, height);
+    textArea.setFont(new Font(FONT, Font.PLAIN, fontSize));
+    return textArea;
+  }
+
   /**
    * Метод створює текстові лейбли і відображує їх у графічному вікні
    *
@@ -98,11 +110,11 @@ public class Window {
     jFrame.add(coverageArea);
     this.difficultFactor = createTextFieldForInput(150, 133, 80, 30, 16, "1");
     jFrame.add(difficultFactor);
-    this.result = createTextFieldForInput(10, 240, 465, 220, 16, "");
+    this.result = createTextArea(10, 240, 465, 220, 12, "");
     jFrame.add(result);
   }
 
-  private JRadioButton createRadioButton(boolean select, int x, int y, int width, int height){
+  private JRadioButton createRadioButton(boolean select, int x, int y, int width, int height) {
     JRadioButton radioButton = new JRadioButton();
     radioButton.setBounds(180, 163, 30, 30);
     radioButton.setSelected(select);
@@ -128,8 +140,15 @@ public class Window {
 
     public void actionPerformed(ActionEvent e) {
       WorkpieceCreator creator = new WorkpieceCreator();
-      Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal, shotBlasting, comboBoxSurfaceType, difficultFactor);
+      Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
+          shotBlasting, comboBoxSurfaceType, difficultFactor);
       log.info("show workpiece: {}", workpiece.toString());
+      Calc calc = new Calc(workpiece);
+      calc.calcAll(workpiece);
+      PrintResult printer = new PrintResult();
+      printer.printAll(calc.getSchemaNormsCalc().getPrimerNorm(),
+          calc.getSchemaNormsCalc().getPaintNorm(), calc.getMetalFraction(), calc.getSolvent647());
+      printer.printAllResult(result);
     }
   }
 

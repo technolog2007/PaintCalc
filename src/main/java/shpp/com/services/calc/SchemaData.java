@@ -15,7 +15,6 @@ import shpp.com.util.CSVParser;
 @Slf4j
 public class SchemaData {
 
-  private final MetalFraction metalFraction;
   private final List<PrimerData> primersData;
   private final PaintData paintData;
 
@@ -26,19 +25,12 @@ public class SchemaData {
   public SchemaData(Workpiece workpiece) {
     this.primersData = setPrimersData(getPrimersDataFromFile(getParsFile(FILE_PRIMER), workpiece));
     this.paintData = setPaintsData(getPaintsDataFromFile(getParsFile(FILE_PAINT), workpiece));
-    this.metalFraction = setMetalFractionData(workpiece);
-  }
-
-  private MetalFraction setMetalFractionData(Workpiece workpiece) {
-    if(workpiece.getShotBlastingFlag()){
-      return new MetalFraction(workpiece.getCoverageArea());
-    }
-    return null;
   }
 
   public List<PrimerData> getPrimersData() {
     return primersData;
   }
+
   public PaintData getPaintData() {
     return paintData;
   }
@@ -54,10 +46,10 @@ public class SchemaData {
   }
 
   /**
-   * Метод робить вибірку грунта по матеріалу заготовки і повертає список грунтів із
-   * відповідними строками
+   * Метод робить вибірку грунта по матеріалу заготовки і повертає список грунтів із відповідними
+   * строками
    *
-   * @param list - розпарсена таблиця грунтових матеріалів
+   * @param list      - розпарсена таблиця грунтових матеріалів
    * @param workpiece - заготовка із набором відповідних характеристик
    * @return - список строк List<String[]> із характеристиками відповідних грунтових матеріалів
    */
@@ -72,8 +64,8 @@ public class SchemaData {
   }
 
   /**
-   * Метод створює із відповідних строк файла-таблиці, список даних із відповідних грунтів,
-   * що містить відповідні характеристики
+   * Метод створює із відповідних строк файла-таблиці, список даних із відповідних грунтів, що
+   * містить відповідні характеристики
    *
    * @param primersDataFromFile - список строк із характеристиками відповідних грунтових матеріалів
    * @return - список грунтових матеріалів List<PrimerData> із нборами відповідних характеристик
@@ -124,7 +116,8 @@ public class SchemaData {
 
   /**
    * Метод виконує вибір фарбового матеріалу і повертає відповідну строку таблиці із файла
-   * @param list - розпарсена таблиця фарбових матеріалів
+   *
+   * @param list      - розпарсена таблиця фарбових матеріалів
    * @param workpiece - заготовка із набором характеристик
    * @return - строка із характеристиками відповідного фарбового матеріалу
    */
@@ -161,9 +154,5 @@ public class SchemaData {
       log.info("No primers in the file! Please check input data file!");
       throw new RuntimeException();
     }
-  }
-
-  public MetalFraction getMetalFraction() {
-    return metalFraction;
   }
 }
