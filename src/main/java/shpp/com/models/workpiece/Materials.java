@@ -1,6 +1,6 @@
 package shpp.com.models.workpiece;
 
-public enum Material {
+public enum Materials {
   CARBON("carbon"),
   STAINLESS("stainless"),
   ALUMINUM("aluminum"),
@@ -8,7 +8,7 @@ public enum Material {
 
   private final String material;
 
-  Material(String material) {
+  Materials(String material) {
     this.material = material;
   }
 

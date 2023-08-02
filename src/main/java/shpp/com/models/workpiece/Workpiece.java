@@ -9,7 +9,7 @@ public class Workpiece {
 
   double coverageArea;
 
-  Material material;
+  Materials material;
 
   RAL ral;
 
@@ -18,19 +18,6 @@ public class Workpiece {
   SurfaceType surfaceType = SurfaceType.metalConstruction;
 
   double difficultyFactor = 1;
-
-  public Workpiece(double coverageArea, Material material, RAL ral) {
-    this.coverageArea = coverageArea;
-    this.material = material;
-    this.ral = ral;
-  }
-
-  public Workpiece(double coverageArea, Material material, RAL ral, boolean shotBlastingFlag) {
-    this.coverageArea = coverageArea;
-    this.material = material;
-    this.ral = ral;
-    this.shotBlastingFlag = shotBlastingFlag;
-  }
 
   public double getCoverageArea() {
     return coverageArea;
@@ -41,11 +28,11 @@ public class Workpiece {
     return this;
   }
 
-  public Material getMaterial() {
+  public Materials getMaterial() {
     return material;
   }
 
-  public Workpiece setMaterial(Material material) {
+  public Workpiece setMaterial(Materials material) {
     this.material = material;
     return this;
   }

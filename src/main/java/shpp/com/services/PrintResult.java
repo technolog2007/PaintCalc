@@ -3,12 +3,12 @@ package shpp.com.services;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.MetalFraction;
 import shpp.com.models.materials.PaintNorm;
 import shpp.com.models.materials.PrimerNorm;
 import shpp.com.models.materials.Solvent647;
+import shpp.com.models.materials.Units;
 
 @Slf4j
 public class PrintResult {
@@ -17,6 +17,7 @@ public class PrintResult {
   private List<String> paintResult;
   private List<String> shotBlastingResult;
   private String solventResult;
+  private static final String SIGN = " --> ";
 
   public PrintResult() {
     this.primerResult = new ArrayList<>();
@@ -24,69 +25,78 @@ public class PrintResult {
     this.shotBlastingResult = new ArrayList<>();
   }
 
-  private String printSolvent(Solvent647 solvent647) {
-    return solvent647.getName() + " --> " + solvent647.getNorm() + " кг";
+  private String createString(String name, double norm, Units unit) {
+    return name + SIGN + norm + " " + unit.getUnit();
   }
 
+  private String printSolvent(Solvent647 solvent647) {
+    return createString(solvent647.getName(), solvent647.getNorm(), Units.KILOGRAM);
+  }
+
+  /**
+   * Метод створює масив результатів обчислення дробоструминної обробки
+   *
+   * @param metalFraction - норми дробоструминної обробки
+   * @return - результати обрахувань дробоструминної обробки
+   */
   private ArrayList<String> printShotBlasting(MetalFraction metalFraction) {
     ArrayList<String> result = new ArrayList<>();
     if (metalFraction != null) {
-      String resultMaterialNorm =
-          metalFraction.getMetalFractionName() + " --> "
-              + metalFraction.getMetalFractionMaterialNorm()
-              + " кг";
-      result.add(resultMaterialNorm);
-      String resultWorkNorm =
-          metalFraction.getMetalFractionName() + " --> " + metalFraction.getMetalFractionWorkNorm()
-              + " хв";
-      result.add(resultWorkNorm);
+      result.add(createString(metalFraction.getMetalFractionName(),
+          metalFraction.getMetalFractionMaterialNorm(), Units.KILOGRAM));
+      result.add(createString(metalFraction.getMetalFractionName(),
+          metalFraction.getMetalFractionWorkNorm(), Units.MINUTE));
     } else {
-      result.add("Дробоструменеве очищення не потрібне!");
+      result.add("Дробоструминне очищення не потрібне!");
     }
     return result;
   }
 
+  /**
+   * Метод створює список результатів обчислення процесу фарбування
+   *
+   * @param paintNorm - норми матеріалів і норми часу для процесу фарбування
+   * @return - результати обрахувань процесу фарбування
+   */
   private ArrayList<String> printPaint(PaintNorm paintNorm) {
     ArrayList<String> result = new ArrayList<>();
-    String resultMaterialNorm =
-        paintNorm.getPaint().getPaintName() + " --> " + paintNorm.getPaintMaterialNorm() + " л";
-    result.add(resultMaterialNorm);
-    String resultWorkNorm =
-        paintNorm.getPaint().getPaintName() + " --> " + paintNorm.getPaintWorkNorm() + " хв";
-    result.add(resultWorkNorm);
-    String resultSolventNorm =
-        paintNorm.getPaint().getPaintSolventName() + " --> " + paintNorm.getPaintSolventNorm() + " л";
-    result.add(resultSolventNorm);
-    String resultHardenerNorm =
-        paintNorm.getPaint().getPaintHardenerName() + " --> " + paintNorm.getPaintHardenerNorm()
-            + " л";
-    result.add(resultHardenerNorm);
+    result.add(createString(paintNorm.getPaint().getPaintName(), paintNorm.getPaintMaterialNorm(),
+        Units.LITER));
+    result.add(createString(paintNorm.getPaint().getPaintName(), paintNorm.getPaintWorkNorm(),
+        Units.MINUTE));
+    result.add(createString(paintNorm.getPaint().getPaintSolventName(),
+        paintNorm.getPaintSolventNorm(), Units.LITER));
+    result.add(createString(paintNorm.getPaint().getPaintHardenerName(),
+        paintNorm.getPaintHardenerNorm(), Units.LITER));
     return result;
   }
 
+  /**
+   * Метод створює список результатів обчислення процесу ґрунтування одним ґрунтом
+   *
+   * @param primerNorm - норми матеріалів і норми часу для процесу ґрунтування
+   * @return - результати обрахувань процесу ґрунтування
+   */
   private List<String> printPrimer(PrimerNorm primerNorm) {
     List<String> result = new ArrayList<>();
-    String resultMaterialNorm =
-        primerNorm.getPrimerData().getPrimerName() + " --> " + primerNorm.getPrimerMaterialNorm()
-            + " л";
-    result.add(resultMaterialNorm);
-    String resultWorkNorm =
-        primerNorm.getPrimerData().getPrimerName() + " --> " + primerNorm.getPrimerWorkNorm()
-            + " хв";
-    result.add(resultWorkNorm);
-    String resultSolventNorm =
-        primerNorm.getPrimerData().getPrimerSolventName() + " --> "
-            + primerNorm.getPrimerSolventNorm()
-            + " л";
-    result.add(resultSolventNorm);
-    String resultHardenerNorm =
-        primerNorm.getPrimerData().getPrimerHardenerName() + " --> "
-            + primerNorm.getPrimerHardenerNorm()
-            + " л";
-    result.add(resultHardenerNorm);
+    result.add(createString(primerNorm.getPrimerData().getPrimerName(),
+        primerNorm.getPrimerMaterialNorm(), Units.LITER));
+    result.add(createString(primerNorm.getPrimerData().getPrimerName(),
+        primerNorm.getPrimerWorkNorm(), Units.MINUTE));
+    result.add(createString(primerNorm.getPrimerData().getPrimerSolventName(),
+        primerNorm.getPrimerSolventNorm(), Units.LITER));
+    result.add(createString(primerNorm.getPrimerData().getPrimerHardenerName(),
+        primerNorm.getPrimerHardenerNorm(), Units.LITER));
     return result;
   }
 
+  /**
+   * Метод створює список результатів обчислення процесу ґрунтування декільками ґрунтами
+   * (багатошарове покриття)
+   *
+   * @param primerNormList - норми матеріалів і норми часу для процесу ґрунтування
+   * @return - результати обрахувань процесу ґрунтування декільками ґрунтами
+   */
   private List<List<String>> printPrimers(List<PrimerNorm> primerNormList) {
     List<List<String>> result = new ArrayList<>();
     for (PrimerNorm primerNorm : primerNormList) {
@@ -95,6 +105,14 @@ public class PrintResult {
     return result;
   }
 
+  /**
+   * Метод створює списки результатів для всіх матеріалів і процесів, що задіяні в схемі фарбування
+   *
+   * @param primerNormList - норми матеріалів і норми часу для процесу ґрунтування
+   * @param paintNorm      - норми матеріалів і норми часу для процесу фарбування
+   * @param metalFraction  - норми матеріалів і норми часу для дробоструминної обробки
+   * @param solvent647     - норма витрати для 647-го розчинника
+   */
   public void printAll(List<PrimerNorm> primerNormList, PaintNorm paintNorm,
       MetalFraction metalFraction, Solvent647 solvent647) {
     this.primerResult = printPrimers(primerNormList);
@@ -103,29 +121,25 @@ public class PrintResult {
     this.solventResult = printSolvent(solvent647);
   }
 
+  private String resultString(String result) {
+    return result + "\n";
+  }
+
   public void printAllResult(JTextArea result) {
-    String resultSummary = "";
-    // print in console primers norm
-    for (int i = 0; i < primerResult.size(); i++) {
-      for (int j = 0; j < primerResult.get(i).size(); j++) {
-        resultSummary =resultSummary + primerResult.get(i).get(j) + "\n";
-        log.info(primerResult.get(i).get(j));
+    StringBuilder builder = new StringBuilder();
+    for (List<String> strings : primerResult) {
+      for (String string : strings) {
+        builder.append(resultString(string));
       }
     }
-    // print in console print norm
-    for (int i = 0; i < paintResult.size(); i++) {
-      resultSummary = resultSummary + paintResult.get(i) + "\n";
-      log.info(paintResult.get(i));
+    for (String value : paintResult) {
+      builder.append(resultString(value));
     }
-    // print in console shot blasting norm
-    for (int i = 0; i < shotBlastingResult.size(); i++) {
-      resultSummary = resultSummary + shotBlastingResult.get(i) + "\n";
-      log.info(shotBlastingResult.get(i));
+    for (String s : shotBlastingResult) {
+      builder.append(resultString(s));
     }
-    // print in console solvent norm
-    log.info(solventResult);
-    resultSummary = resultSummary + solventResult + "\n";
-    log.info("RESULT : {}", resultSummary);
-    result.setText(resultSummary);
+    builder.append(resultString(solventResult));
+    log.info("RESULT : {}", builder);
+    result.setText(builder.toString());
   }
 }

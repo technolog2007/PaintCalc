@@ -11,14 +11,13 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
-import shpp.com.models.workpiece.Material;
+import shpp.com.models.workpiece.Materials;
 import shpp.com.models.workpiece.RAL;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
 import shpp.com.services.PrintResult;
 import shpp.com.services.WorkpieceCreator;
 import shpp.com.services.calc.Calc;
-import shpp.com.services.calc.SchemaNormsCalc;
 
 @Slf4j
 public class Window {
@@ -28,7 +27,7 @@ public class Window {
   private JTextArea result;
   private JRadioButton shotBlasting;
   private JButton calculate;
-  private final JComboBox<Material> comboBoxMaterial = new JComboBox<>(Material.values());
+  private final JComboBox<Materials> comboBoxMaterial = new JComboBox<>(Materials.values());
   private final JComboBox<RAL> comboBoxRal = new JComboBox<>(RAL.values());
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
 
