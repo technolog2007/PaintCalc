@@ -2,24 +2,27 @@ package shpp.com.services.calc;
 
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.MetalFraction;
+import shpp.com.models.materials.Rag;
 import shpp.com.models.materials.Solvent647;
 import shpp.com.models.workpiece.Workpiece;
 
 @Slf4j
 public class Calc {
 
-  private final SchemaNormsCalc schemaNormsCalc;
+  private final CalcSchemaNorms schemaNormsCalc;
   private MetalFraction metalFraction;
   private final Solvent647 solvent647;
+  private Rag rag;
 
   public Calc(Workpiece workpiece) {
-    this.schemaNormsCalc = new SchemaNormsCalc(new SchemaData(workpiece));
     this.solvent647 = new Solvent647();
+    this.schemaNormsCalc = new CalcSchemaNorms(new SchemaData(workpiece));
   }
 
   public void calcAll(Workpiece workpiece) {
-    calcSchemasNorms(workpiece);
     calcMetalFraction(workpiece);
+    calcRag(workpiece);
+    calcSchemasNorms(workpiece);
   }
 
   private void calcSchemasNorms(Workpiece workpiece) {
@@ -32,8 +35,14 @@ public class Calc {
       this.metalFraction = new MetalFraction(workpiece.getCoverageArea());
     }
   }
+  private void calcRag(Workpiece workpiece){
+    if(!workpiece.getShotBlastingFlag()){
+      this.rag = new Rag();
+      this.rag = rag.setNorm(workpiece.getCoverageArea() * rag.getCoefficient());
+    }
+  }
 
-  public SchemaNormsCalc getSchemaNormsCalc() {
+  public CalcSchemaNorms getSchemaNormsCalc() {
     return schemaNormsCalc;
   }
 
@@ -43,5 +52,9 @@ public class Calc {
 
   public MetalFraction getMetalFraction() {
     return metalFraction;
+  }
+
+  public Rag getRag() {
+    return rag;
   }
 }

@@ -8,12 +8,12 @@ import shpp.com.models.materials.PrimerNorm;
 import shpp.com.models.workpiece.Workpiece;
 
 @Slf4j
-public class SchemaNormsCalc {
+public class CalcSchemaNorms {
 
   private final List<PrimerNorm> primerNorm;
   private final PaintNorm paintNorm;
 
-  public SchemaNormsCalc(SchemaData schemaData) {
+  public CalcSchemaNorms(SchemaData schemaData) {
     this.primerNorm = setPrimerDataToPrimerNorm(schemaData);
     this.paintNorm = setPaintToPaintNorm(schemaData);
   }

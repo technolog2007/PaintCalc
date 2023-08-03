@@ -26,7 +26,6 @@ public class Window {
   private JTextField difficultFactor;
   private JTextArea result;
   private JRadioButton shotBlasting;
-  private JButton calculate;
   private final JComboBox<Materials> comboBoxMaterial = new JComboBox<>(Materials.values());
   private final JComboBox<RAL> comboBoxRal = new JComboBox<>(RAL.values());
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
@@ -41,7 +40,7 @@ public class Window {
     createTextFields(jFrame);
     createRadioButtons(jFrame);
     createComboBoxes(jFrame);
-    this.calculate = createButton("RESULT", 200, 200, 100, 30);
+    JButton calculate = createButton("RESULT", 200, 200, 100, 30);
     jFrame.add(calculate);
     calculate.addActionListener(new ButtonListener());
 
@@ -146,7 +145,8 @@ public class Window {
       calc.calcAll(workpiece);
       PrintResult printer = new PrintResult();
       printer.printAll(calc.getSchemaNormsCalc().getPrimerNorm(),
-          calc.getSchemaNormsCalc().getPaintNorm(), calc.getMetalFraction(), calc.getSolvent647());
+          calc.getSchemaNormsCalc().getPaintNorm(), calc.getMetalFraction(), calc.getSolvent647(),
+          calc.getRag());
       printer.printAllResult(result);
     }
   }

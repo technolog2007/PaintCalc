@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.MetalFraction;
 import shpp.com.models.materials.PaintNorm;
 import shpp.com.models.materials.PrimerNorm;
+import shpp.com.models.materials.Rag;
 import shpp.com.models.materials.Solvent647;
 import shpp.com.models.materials.Units;
 
@@ -17,6 +18,7 @@ public class PrintResult {
   private List<String> paintResult;
   private List<String> shotBlastingResult;
   private String solventResult;
+  private String ragResult;
   private static final String SIGN = " --> ";
 
   public PrintResult() {
@@ -31,6 +33,14 @@ public class PrintResult {
 
   private String printSolvent(Solvent647 solvent647) {
     return createString(solvent647.getName(), solvent647.getNorm(), Units.KILOGRAM);
+  }
+
+  private String printRag(Rag rag) {
+    if(rag != null) {
+      return createString(rag.getName(), rag.getNorm(), Units.KILOGRAM);
+    } else {
+      return "Ганчір'я не потрібне";
+    }
   }
 
   /**
@@ -114,11 +124,12 @@ public class PrintResult {
    * @param solvent647     - норма витрати для 647-го розчинника
    */
   public void printAll(List<PrimerNorm> primerNormList, PaintNorm paintNorm,
-      MetalFraction metalFraction, Solvent647 solvent647) {
+      MetalFraction metalFraction, Solvent647 solvent647, Rag rag) {
+    this.shotBlastingResult = printShotBlasting(metalFraction);
+    this.ragResult = printRag(rag);
+    this.solventResult = printSolvent(solvent647);
     this.primerResult = printPrimers(primerNormList);
     this.paintResult = printPaint(paintNorm);
-    this.shotBlastingResult = printShotBlasting(metalFraction);
-    this.solventResult = printSolvent(solvent647);
   }
 
   private String resultString(String result) {
@@ -127,6 +138,11 @@ public class PrintResult {
 
   public void printAllResult(JTextArea result) {
     StringBuilder builder = new StringBuilder();
+    for (String s : shotBlastingResult) {
+      builder.append(resultString(s));
+    }
+    builder.append(resultString(ragResult));
+    builder.append(resultString(solventResult));
     for (List<String> strings : primerResult) {
       for (String string : strings) {
         builder.append(resultString(string));
@@ -135,10 +151,6 @@ public class PrintResult {
     for (String value : paintResult) {
       builder.append(resultString(value));
     }
-    for (String s : shotBlastingResult) {
-      builder.append(resultString(s));
-    }
-    builder.append(resultString(solventResult));
     log.info("RESULT : {}", builder);
     result.setText(builder.toString());
   }
