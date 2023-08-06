@@ -2,6 +2,7 @@ package shpp.com.models.workpiece;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import shpp.com.models.workpiece.paint_materials_ral.Ral;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,7 +12,9 @@ public class Workpiece {
 
   Materials material;
 
-  RAL ral;
+  Ral ral;
+
+  Mark mark;
 
   boolean shotBlastingFlag = false;
 
@@ -37,11 +40,11 @@ public class Workpiece {
     return this;
   }
 
-  public RAL getRal() {
+  public Ral getRal() {
     return ral;
   }
 
-  public Workpiece setRal(RAL ral) {
+  public Workpiece setRal(Ral ral) {
     this.ral = ral;
     return this;
   }
@@ -73,12 +76,22 @@ public class Workpiece {
     return this;
   }
 
+  public Mark getMark() {
+    return mark;
+  }
+
+  public Workpiece setMark(Mark mark) {
+    this.mark = mark;
+    return this;
+  }
+
   @Override
   public String toString() {
     return "Workpiece{" +
         "coverageArea=" + coverageArea +
         ", material=" + material +
         ", ral=" + ral +
+        ", mark=" + mark +
         ", shotBlastingFlag=" + shotBlastingFlag +
         ", surfaceType=" + surfaceType +
         ", difficultyFactor=" + difficultyFactor +

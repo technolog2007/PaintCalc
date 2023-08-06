@@ -123,7 +123,7 @@ public class SchemaData {
   private String[] getPaintsDataFromFile(List<String[]> list, Workpiece workpiece) {
     String[] data = new String[0];
     for (String[] strings : list) {
-      if (strings[0].equals(workpiece.getRal().getRal())) {
+      if (strings[0].equals(workpiece.getRal().getRalNumber())) {
         data = strings;
       }
     }

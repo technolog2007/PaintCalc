@@ -28,7 +28,7 @@ public class PrintResult {
   }
 
   private String createString(String name, double norm, Units unit) {
-    return name + SIGN + norm + " " + unit.getUnit();
+    return name + SIGN + String.format("%.3f",norm) + " " + unit.getUnit();
   }
 
   private String printSolvent(Solvent647 solvent647) {
