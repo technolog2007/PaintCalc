@@ -3,6 +3,8 @@ package shpp.com.graf;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -11,10 +13,11 @@ import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
+import shpp.com.models.workpiece.Mark;
 import shpp.com.models.workpiece.Materials;
-import shpp.com.models.workpiece.RAL;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
+import shpp.com.models.workpiece.paint_materials_ral.Ral;
 import shpp.com.services.PrintResult;
 import shpp.com.services.WorkpieceCreator;
 import shpp.com.services.calc.Calc;
@@ -27,7 +30,9 @@ public class Window {
   private JTextArea result;
   private JRadioButton shotBlasting;
   private final JComboBox<Materials> comboBoxMaterial = new JComboBox<>(Materials.values());
-  private final JComboBox<RAL> comboBoxRal = new JComboBox<>(RAL.values());
+  private final JComboBox<Mark> comboBoxMark = new JComboBox<>(Mark.values());
+  private final JComboBox<Object> comboBoxRal = new JComboBox<>(Ral.values());
+  private Map<Mark, Ral[]> ralMap;
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
 
   private static final String FONT = "Arial";
@@ -124,22 +129,48 @@ public class Window {
     jFrame.add(shotBlasting);
   }
 
+//  private JComboBox<Object> createRalBox(JComboBox<Mark> mark) {
+//    if(Objects.requireNonNull(mark.getSelectedItem()).equals(Mark.HELIOS)){
+//      return new JComboBox<>(Helios.values());
+//    } else if (mark.getSelectedItem().equals(Mark.KO)){
+//      return new JComboBox<>(Ko.values());
+//    } else if (mark.getSelectedItem().equals(Mark.UR)){
+//      return new JComboBox<>(Ur.values());
+//    } else if (mark.getSelectedItem().equals(Mark.ML)){
+//      return new JComboBox<>(Ml.values());
+//    }
+//    return null;
+//  }
+
   private void createComboBoxes(JFrame jFrame) {
     comboBoxMaterial.setBounds(150, 10, 100, 30);
     jFrame.add(comboBoxMaterial);
+    comboBoxMark.setBounds(260, 40, 100, 30);
+    comboBoxMark.setSelectedIndex(0);
+
     comboBoxRal.setBounds(150, 40, 100, 30);
     comboBoxRal.setSelectedIndex(1);
+
+    jFrame.add(comboBoxMark);
     jFrame.add(comboBoxRal);
+
     comboBoxSurfaceType.setBounds(150, 70, 100, 30);
     jFrame.add(comboBoxSurfaceType);
+
+    comboBoxMark.addActionListener(e -> {
+      Mark mark = (Mark) comboBoxMark.getSelectedItem();
+      Ral[] ralListForMark = ralMap.get(mark);
+      comboBoxRal.setModel(new DefaultComboBoxModel<>(ralListForMark));
+    });
   }
+
 
   class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
       WorkpieceCreator creator = new WorkpieceCreator();
       Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
-          shotBlasting, comboBoxSurfaceType, difficultFactor);
+          comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor);
       log.info("show workpiece: {}", workpiece.toString());
       Calc calc = new Calc(workpiece);
       calc.calcAll(workpiece);
