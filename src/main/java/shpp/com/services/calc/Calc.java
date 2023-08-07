@@ -16,7 +16,7 @@ public class Calc {
 
   public Calc(Workpiece workpiece) {
     this.solvent647 = new Solvent647();
-    this.schemaNormsCalc = new CalcSchemaNorms(new SchemaData(workpiece));
+    this.schemaNormsCalc = new CalcSchemaNorms(workpiece);
   }
 
   public void calcAll(Workpiece workpiece) {

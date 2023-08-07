@@ -2,7 +2,6 @@ package shpp.com.models.workpiece;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import shpp.com.models.workpiece.paint_materials_ral.Ral;
 
 @NoArgsConstructor
 @AllArgsConstructor

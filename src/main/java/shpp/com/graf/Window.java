@@ -15,12 +15,13 @@ import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.workpiece.Mark;
 import shpp.com.models.workpiece.Materials;
+import shpp.com.models.workpiece.Ral;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
-import shpp.com.models.workpiece.paint_materials_ral.Ral;
 import shpp.com.services.PrintResult;
 import shpp.com.services.WorkpieceCreator;
 import shpp.com.services.calc.Calc;
+import shpp.com.services.calc.SchemaData;
 
 @Slf4j
 public class Window {
@@ -32,9 +33,8 @@ public class Window {
   private final JComboBox<Materials> comboBoxMaterial = new JComboBox<>(Materials.values());
   private final JComboBox<Mark> comboBoxMark = new JComboBox<>(Mark.values());
   private final JComboBox<Object> comboBoxRal = new JComboBox<>(Ral.values());
-  private Map<Mark, Ral[]> ralMap;
+  private final Map<Mark, Ral[]> map = new SchemaData().getMap();
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
-
   private static final String FONT = "Arial";
 
   public void createWindow() {
@@ -129,19 +129,6 @@ public class Window {
     jFrame.add(shotBlasting);
   }
 
-//  private JComboBox<Object> createRalBox(JComboBox<Mark> mark) {
-//    if(Objects.requireNonNull(mark.getSelectedItem()).equals(Mark.HELIOS)){
-//      return new JComboBox<>(Helios.values());
-//    } else if (mark.getSelectedItem().equals(Mark.KO)){
-//      return new JComboBox<>(Ko.values());
-//    } else if (mark.getSelectedItem().equals(Mark.UR)){
-//      return new JComboBox<>(Ur.values());
-//    } else if (mark.getSelectedItem().equals(Mark.ML)){
-//      return new JComboBox<>(Ml.values());
-//    }
-//    return null;
-//  }
-
   private void createComboBoxes(JFrame jFrame) {
     comboBoxMaterial.setBounds(150, 10, 100, 30);
     jFrame.add(comboBoxMaterial);
@@ -159,7 +146,7 @@ public class Window {
 
     comboBoxMark.addActionListener(e -> {
       Mark mark = (Mark) comboBoxMark.getSelectedItem();
-      Ral[] ralListForMark = ralMap.get(mark);
+      Ral[] ralListForMark = map.get(mark);
       comboBoxRal.setModel(new DefaultComboBoxModel<>(ralListForMark));
     });
   }

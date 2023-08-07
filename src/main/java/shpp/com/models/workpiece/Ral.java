@@ -1,4 +1,4 @@
-package shpp.com.models.workpiece.paint_materials_ral;
+package shpp.com.models.workpiece;
 
 public enum Ral {
 
