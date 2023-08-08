@@ -2,16 +2,16 @@ package shpp.com.models.workpiece;
 
 public enum SurfaceType {
 
-  metalConstruction("metal construction"),
-  pipeline("pipeline");
+  METAL_CONSTRUCTION("metal construction"),
+  PIPELINE("pipeline");
 
-  private final String surfaceType;
+  private final String typeOfSurface;
 
   SurfaceType(String surfaceType) {
-    this.surfaceType = surfaceType;
+    this.typeOfSurface = surfaceType;
   }
 
-  public String getSurfaceType() {
-    return surfaceType;
+  public String getTypeOfSurface() {
+    return typeOfSurface;
   }
 }

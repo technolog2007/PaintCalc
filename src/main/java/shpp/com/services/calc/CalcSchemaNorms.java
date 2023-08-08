@@ -23,10 +23,6 @@ public class CalcSchemaNorms {
     this.paintNorm = setPaintToPaintNorm();
   }
 
-  public SchemaData getSchemaData() {
-    return schemaData;
-  }
-
   /**
    * The method accepts the data of the paint schema, creates a List<PrimerNorm>
    *   and sets the input data (PrimerData)

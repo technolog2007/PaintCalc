@@ -76,8 +76,12 @@ public class PrintResult {
         Units.MINUTE));
     result.add(createString(paintNorm.getPaint().getPaintSolventName(),
         paintNorm.getPaintSolventNorm(), Units.LITER));
-    result.add(createString(paintNorm.getPaint().getPaintHardenerName(),
-        paintNorm.getPaintHardenerNorm(), Units.LITER));
+    if(paintNorm.getPaint().getPaintHardenerName() != null) {
+      result.add(createString(paintNorm.getPaint().getPaintHardenerName(),
+          paintNorm.getPaintHardenerNorm(), Units.LITER));
+    }else{
+      result.add("");
+    }
     return result;
   }
 
@@ -101,11 +105,11 @@ public class PrintResult {
   }
 
   /**
-   * Метод створює список результатів обчислення процесу ґрунтування декільками ґрунтами
+   * Метод створює список результатів обчислення процесу ґрунтування для декількох ґрунтів
    * (багатошарове покриття)
    *
    * @param primerNormList - норми матеріалів і норми часу для процесу ґрунтування
-   * @return - результати обрахувань процесу ґрунтування декільками ґрунтами
+   * @return - результати обрахувань процесу ґрунтування декількома ґрунтами
    */
   private List<List<String>> printPrimers(List<PrimerNorm> primerNormList) {
     List<List<String>> result = new ArrayList<>();

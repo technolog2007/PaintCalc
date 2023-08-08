@@ -17,7 +17,7 @@ public class Workpiece {
 
   boolean shotBlastingFlag = false;
 
-  SurfaceType surfaceType = SurfaceType.metalConstruction;
+  SurfaceType surfaceType = SurfaceType.METAL_CONSTRUCTION;
 
   double difficultyFactor = 1;
 

@@ -1,8 +1,9 @@
 package shpp.com.services.calc;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.PaintData;
 import shpp.com.models.materials.PrimerData;
@@ -19,10 +20,9 @@ public class SchemaData {
 
   private List<PrimerData> primersData;
   private PaintData paintData;
-
   private final List<String[]> parsePrimerData;
   private final List<String[]> parsePaintData;
-  private final HashMap<Mark,Ral[]> map;
+  private final Map<Mark, Ral[]> map;
 
   private static final String FILE_PRIMER = "primer";
   private static final String FILE_PAINT = "paint";
@@ -37,11 +37,12 @@ public class SchemaData {
   public List<PrimerData> getPrimersData() {
     return primersData;
   }
+
   public PaintData getPaintData() {
     return paintData;
   }
 
-  public HashMap<Mark, Ral[]> getMap() {
+  public Map<Mark, Ral[]> getMap() {
     return this.map;
   }
 
@@ -55,26 +56,22 @@ public class SchemaData {
     return parser.parseFile(fileName);
   }
 
-  private HashMap<Mark, Ral[]> createMap(List<String[]> list) {
-    HashMap<Mark, Ral[]> map = new HashMap<>();
-    // 1. Зробити вибірку по всім Mark і скласти їх в Map
-    // 2. Створити і наповнити масиви по кількості Mark
-    // 3. Скомбінувати Mark і масиви Ral в HashMap
+  private EnumMap<Mark, Ral[]> createMap(List<String[]> list) {
+    EnumMap<Mark, Ral[]> markEnumMap = new EnumMap<>(Mark.class);
     for (int i = 0; i < Mark.values().length; i++) {
-      for (int j = 0; j < list.size(); j++) {
-        List<Ral> arr = new ArrayList<>();
-        if (Mark.values()[i].getMarkName().equals(list.get(j)[0])) {
+      List<Ral> arr = new ArrayList<>();
+      for (String[] strings : list) {
+        if (Mark.values()[i].getMarkName().equals(strings[0])) {
           for (int k = 0; k < Ral.values().length; k++) {
-            if (list.get(j)[1].equals(Ral.values()[k].getRalNumber())) {
+            if (strings[1].equals(Ral.values()[k].getRalNumber())) {
               arr.add(Ral.values()[k]);
             }
           }
-          map.put(Mark.values()[i], arr.toArray(new Ral[0]));
         }
       }
+      markEnumMap.put(Mark.values()[i], arr.toArray(new Ral[0]));
     }
-    log.info("Map size is : {}",map.size());
-    return map;
+    return markEnumMap;
   }
 
   /**
@@ -103,7 +100,7 @@ public class SchemaData {
   public List<PrimerData> setPrimersData(Workpiece workpiece) {
     List<String[]> primersDataFromFile = getPrimersDataFromFile(workpiece);
     List<PrimerData> dataList = new ArrayList<>();
-    if (primersDataFromFile.size() >= 1) {
+    if (!primersDataFromFile.isEmpty()) {
       for (String[] strings : primersDataFromFile) {
         switch (strings[2]) {
           case "1K": {
@@ -136,6 +133,9 @@ public class SchemaData {
             dataList.add(primerData);
             break;
           }
+          default:
+            log.info("Something wrong with \"primer\" file! Please check input data file!");
+            throw new RuntimeException();
         }
       }
     } else {
@@ -171,14 +171,23 @@ public class SchemaData {
    */
   public PaintData setPaintsData(Workpiece workpiece) {
     String[] paintDataFromFile = getPaintsDataFromFile(workpiece);
-    if (paintDataFromFile.length >= 1) {
-      // вибірка лише для двокомпонентних фарб
+    if (paintDataFromFile.length == 9) {
+      // sample only for two-component paints
       this.paintData = new PaintData()
           .setPaintName(paintDataFromFile[2])
           .setPaintMaterialCoefficient(Double.parseDouble(paintDataFromFile[3]))
           .setPaintWorkCoefficient(Double.parseDouble(paintDataFromFile[4]))
           .setPaintHardenerName(paintDataFromFile[7])
           .setPaintHardenerCoefficient(Double.parseDouble(paintDataFromFile[8]))
+          .setPaintSolventName(paintDataFromFile[5])
+          .setPaintSolventCoefficient(Double.parseDouble(paintDataFromFile[6]));
+      return paintData;
+    } else if (paintDataFromFile.length == 7) {
+      // sample only for one-component paints
+      this.paintData = new PaintData()
+          .setPaintName(paintDataFromFile[2])
+          .setPaintMaterialCoefficient(Double.parseDouble(paintDataFromFile[3]))
+          .setPaintWorkCoefficient(Double.parseDouble(paintDataFromFile[4]))
           .setPaintSolventName(paintDataFromFile[5])
           .setPaintSolventCoefficient(Double.parseDouble(paintDataFromFile[6]));
       return paintData;

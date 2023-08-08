@@ -1,18 +1,18 @@
 ﻿maker;RAL;paint material;material coefficient; %;work coefficient, min;solvent;coefficient1, %;hardener;coefficient2, %
-helios;7037;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 7037 dusty grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;5020;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5020 ocean blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;5017;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5017 traffic blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;5012;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5012 light blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;1018;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 1018 zinc yellow;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;1002;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 1002 sand yellow;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;9017;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 9017 trafic black;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;9003;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 9003 signal white;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;7035;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7035 light grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;7016;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7016 antracite grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;7012;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7012 basalt grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;7024;Емаль 2К поліурітан-акрилова Helios Pur RAL 7024 graphite grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-helios;3000;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 3000 flame red;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
-ml;silver;Емаль МЛ-165 срібна ГОСТ 12034-77;0.2;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
-ur;1018;Емаль УР-1161 RAL 1018 Zinc yellow ТУ 6-10-1758-80;0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
-ur;1002;Емаль УР-1161 RAL 1002 Sand Yellow (піщано-жовтий);0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
-ko;silver;Емаль КО-828 ТУ 2312-001-24358611-2003;0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
+Helios;7037;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 7037 dusty grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;5020;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5020 ocean blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;5017;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5017 traffic blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;5012;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 5012 light blue;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;1018;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 1018 zinc yellow;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;1002;Автоемаль 2K 3:1 поліуретанова полуматова Helios PUR RB RAL 1002 sand yellow;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;9017;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 9017 trafic black;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;9003;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 9003 signal white;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;7035;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7035 light grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;7016;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7016 antracite grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;7012;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 7012 basalt grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;7024;Емаль 2К поліурітан-акрилова Helios Pur RAL 7024 graphite grey;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+Helios;3000;Автоемаль 2К поліурітан-акрилова Helios Pur RAL 3000 flame red;0.2;5;Розчинник Helios THINNER 20-15;0.4;Затверджувач Helios HARDENER 20-05;0.3
+МЛ;silver;Емаль МЛ-165 срібна ГОСТ 12034-77;0.2;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
+УР;1018;Емаль УР-1161 RAL 1018 Zinc yellow ТУ 6-10-1758-80;0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
+УР;1002;Емаль УР-1161 RAL 1002 Sand Yellow (піщано-жовтий);0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
+КО;silver;Емаль КО-828 ТУ 2312-001-24358611-2003;0.25;5;Розчинник ксилол ГОСТ 9949-76;0.4;;;
