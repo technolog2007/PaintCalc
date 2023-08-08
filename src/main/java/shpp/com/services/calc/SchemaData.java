@@ -1,10 +1,14 @@
 package shpp.com.services.calc;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.PaintData;
 import shpp.com.models.materials.PrimerData;
+import shpp.com.models.workpiece.Mark;
+import shpp.com.models.workpiece.Ral;
 import shpp.com.models.workpiece.Workpiece;
 import shpp.com.util.CSVParser;
 
@@ -14,16 +18,20 @@ import shpp.com.util.CSVParser;
 @Slf4j
 public class SchemaData {
 
-  private final List<PrimerData> primersData;
-  private final PaintData paintData;
+  private List<PrimerData> primersData;
+  private PaintData paintData;
+  private final List<String[]> parsePrimerData;
+  private final List<String[]> parsePaintData;
+  private final Map<Mark, Ral[]> map;
 
   private static final String FILE_PRIMER = "primer";
   private static final String FILE_PAINT = "paint";
 
 
-  public SchemaData(Workpiece workpiece) {
-    this.primersData = setPrimersData(getPrimersDataFromFile(getParsFile(FILE_PRIMER), workpiece));
-    this.paintData = setPaintsData(getPaintsDataFromFile(getParsFile(FILE_PAINT), workpiece));
+  public SchemaData() {
+    this.parsePrimerData = getParsFile(FILE_PRIMER);
+    this.parsePaintData = getParsFile(FILE_PAINT);
+    this.map = createMap(this.parsePaintData);
   }
 
   public List<PrimerData> getPrimersData() {
@@ -32,6 +40,10 @@ public class SchemaData {
 
   public PaintData getPaintData() {
     return paintData;
+  }
+
+  public Map<Mark, Ral[]> getMap() {
+    return this.map;
   }
 
   /**
@@ -44,17 +56,34 @@ public class SchemaData {
     return parser.parseFile(fileName);
   }
 
+  private EnumMap<Mark, Ral[]> createMap(List<String[]> list) {
+    EnumMap<Mark, Ral[]> markEnumMap = new EnumMap<>(Mark.class);
+    for (int i = 0; i < Mark.values().length; i++) {
+      List<Ral> arr = new ArrayList<>();
+      for (String[] strings : list) {
+        if (Mark.values()[i].getMarkName().equals(strings[0])) {
+          for (int k = 0; k < Ral.values().length; k++) {
+            if (strings[1].equals(Ral.values()[k].getRalNumber())) {
+              arr.add(Ral.values()[k]);
+            }
+          }
+        }
+      }
+      markEnumMap.put(Mark.values()[i], arr.toArray(new Ral[0]));
+    }
+    return markEnumMap;
+  }
+
   /**
    * Метод робить вибірку грунта по матеріалу заготовки і повертає список грунтів із відповідними
    * строками
    *
-   * @param list      - розпарсена таблиця грунтових матеріалів
    * @param workpiece - заготовка із набором відповідних характеристик
    * @return - список строк List<String[]> із характеристиками відповідних грунтових матеріалів
    */
-  private List<String[]> getPrimersDataFromFile(List<String[]> list, Workpiece workpiece) {
+  private List<String[]> getPrimersDataFromFile(Workpiece workpiece) {
     List<String[]> data = new ArrayList<>();
-    for (String[] strings : list) {
+    for (String[] strings : parsePrimerData) {
       if (strings[0].equals(workpiece.getMaterial().getMaterial())) {
         data.add(strings);
       }
@@ -66,12 +95,12 @@ public class SchemaData {
    * Метод створює із відповідних строк файла-таблиці, список даних із відповідних грунтів, що
    * містить відповідні характеристики
    *
-   * @param primersDataFromFile - список строк із характеристиками відповідних грунтових матеріалів
    * @return - список грунтових матеріалів List<PrimerData> із нборами відповідних характеристик
    */
-  private List<PrimerData> setPrimersData(List<String[]> primersDataFromFile) {
+  public List<PrimerData> setPrimersData(Workpiece workpiece) {
+    List<String[]> primersDataFromFile = getPrimersDataFromFile(workpiece);
     List<PrimerData> dataList = new ArrayList<>();
-    if (primersDataFromFile.size() >= 1) {
+    if (!primersDataFromFile.isEmpty()) {
       for (String[] strings : primersDataFromFile) {
         switch (strings[2]) {
           case "1K": {
@@ -104,26 +133,30 @@ public class SchemaData {
             dataList.add(primerData);
             break;
           }
+          default:
+            log.info("Something wrong with \"primer\" file! Please check input data file!");
+            throw new RuntimeException();
         }
       }
     } else {
       log.info("No primers in the file! Please check input data file!");
       throw new RuntimeException();
     }
+    this.primersData = dataList;
     return dataList;
   }
 
   /**
    * Метод виконує вибір фарбового матеріалу і повертає відповідну строку таблиці із файла
    *
-   * @param list      - розпарсена таблиця фарбових матеріалів
    * @param workpiece - заготовка із набором характеристик
    * @return - строка із характеристиками відповідного фарбового матеріалу
    */
-  private String[] getPaintsDataFromFile(List<String[]> list, Workpiece workpiece) {
+  private String[] getPaintsDataFromFile(Workpiece workpiece) {
     String[] data = new String[0];
-    for (String[] strings : list) {
-      if (strings[0].equals(workpiece.getRal().getRalNumber())) {
+    for (String[] strings : parsePaintData) {
+      if (strings[1].equals(workpiece.getRal().getRalNumber()) &&
+          strings[0].equals(workpiece.getMark().getMarkName())) {
         data = strings;
       }
     }
@@ -134,21 +167,30 @@ public class SchemaData {
    * Метод створює із відповідної строки файла-таблиці, фарбовий матеріал із набором відповідних
    * характеристик
    *
-   * @param paintDataFromFile - відповідна строка із характеристикамми відповідного фарбового
-   *                          матеріалу
    * @return - фарбовий матеріал PaintData із набором відповідних характеристик
    */
-  private PaintData setPaintsData(String[] paintDataFromFile) {
-    if (paintDataFromFile.length >= 1) {
-      // вибірка лише для двокомпонентних фарб
-      return new PaintData()
-          .setPaintName(paintDataFromFile[1])
-          .setPaintMaterialCoefficient(Double.parseDouble(paintDataFromFile[2]))
-          .setPaintWorkCoefficient(Double.parseDouble(paintDataFromFile[3]))
-          .setPaintHardenerName(paintDataFromFile[6])
-          .setPaintHardenerCoefficient(Double.parseDouble(paintDataFromFile[7]))
-          .setPaintSolventName(paintDataFromFile[4])
-          .setPaintSolventCoefficient(Double.parseDouble(paintDataFromFile[5]));
+  public PaintData setPaintsData(Workpiece workpiece) {
+    String[] paintDataFromFile = getPaintsDataFromFile(workpiece);
+    if (paintDataFromFile.length == 9) {
+      // sample only for two-component paints
+      this.paintData = new PaintData()
+          .setPaintName(paintDataFromFile[2])
+          .setPaintMaterialCoefficient(Double.parseDouble(paintDataFromFile[3]))
+          .setPaintWorkCoefficient(Double.parseDouble(paintDataFromFile[4]))
+          .setPaintHardenerName(paintDataFromFile[7])
+          .setPaintHardenerCoefficient(Double.parseDouble(paintDataFromFile[8]))
+          .setPaintSolventName(paintDataFromFile[5])
+          .setPaintSolventCoefficient(Double.parseDouble(paintDataFromFile[6]));
+      return paintData;
+    } else if (paintDataFromFile.length == 7) {
+      // sample only for one-component paints
+      this.paintData = new PaintData()
+          .setPaintName(paintDataFromFile[2])
+          .setPaintMaterialCoefficient(Double.parseDouble(paintDataFromFile[3]))
+          .setPaintWorkCoefficient(Double.parseDouble(paintDataFromFile[4]))
+          .setPaintSolventName(paintDataFromFile[5])
+          .setPaintSolventCoefficient(Double.parseDouble(paintDataFromFile[6]));
+      return paintData;
     } else {
       log.info("No primers in the file! Please check input data file!");
       throw new RuntimeException();

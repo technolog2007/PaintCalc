@@ -6,9 +6,9 @@ import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.workpiece.Mark;
 import shpp.com.models.workpiece.Materials;
+import shpp.com.models.workpiece.Ral;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
-import shpp.com.models.workpiece.paint_materials_ral.Ral;
 
 @Slf4j
 public class WorkpieceCreator {

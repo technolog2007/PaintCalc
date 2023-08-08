@@ -2,7 +2,6 @@ package shpp.com.models.workpiece;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import shpp.com.models.workpiece.paint_materials_ral.Ral;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +17,7 @@ public class Workpiece {
 
   boolean shotBlastingFlag = false;
 
-  SurfaceType surfaceType = SurfaceType.metalConstruction;
+  SurfaceType surfaceType = SurfaceType.METAL_CONSTRUCTION;
 
   double difficultyFactor = 1;
 

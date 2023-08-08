@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.materials.PaintNorm;
+import shpp.com.models.materials.PrimerData;
 import shpp.com.models.materials.PrimerNorm;
 import shpp.com.models.workpiece.Workpiece;
 
@@ -12,21 +13,25 @@ public class CalcSchemaNorms {
 
   private final List<PrimerNorm> primerNorm;
   private final PaintNorm paintNorm;
+  private final SchemaData schemaData;
 
-  public CalcSchemaNorms(SchemaData schemaData) {
-    this.primerNorm = setPrimerDataToPrimerNorm(schemaData);
-    this.paintNorm = setPaintToPaintNorm(schemaData);
+  public CalcSchemaNorms(Workpiece workpiece) {
+    this.schemaData = new SchemaData();
+    this.schemaData.setPrimersData(workpiece);
+    this.schemaData.setPaintsData(workpiece);
+    this.primerNorm = setPrimerDataToPrimerNorm();
+    this.paintNorm = setPaintToPaintNorm();
   }
 
   /**
    * The method accepts the data of the paint schema, creates a List<PrimerNorm>
    *   and sets the input data (PrimerData)
-   * @param schemaData - paint schema SchemaData
    * @return - List<PrimerNorm>
    */
-  private List<PrimerNorm> setPrimerDataToPrimerNorm(SchemaData schemaData) {
+  private List<PrimerNorm> setPrimerDataToPrimerNorm() {
     List<PrimerNorm> primerNormList = new ArrayList<>();
-    for (int i = 0; i < schemaData.getPrimersData().size(); i++) {
+    List<PrimerData> primersDataList = this.schemaData.getPrimersData();
+    for (int i = 0; i < primersDataList.size(); i++) {
       primerNormList.add(new PrimerNorm().setPrimerData(schemaData.getPrimersData().get(i)));
     }
     return primerNormList;
@@ -35,10 +40,9 @@ public class CalcSchemaNorms {
   /**
    * The method takes a paint scheme and returns a PaintNorm that contains
    * the corresponding PaintData
-   * @param schemaData - paint schema SchemaData
    * @return - PaintNorm
    */
-  private PaintNorm setPaintToPaintNorm(SchemaData schemaData) {
+  private PaintNorm setPaintToPaintNorm() {
     return new PaintNorm().setPaint(schemaData.getPaintData());
   }
 

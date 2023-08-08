@@ -15,12 +15,13 @@ import javax.swing.JTextField;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.workpiece.Mark;
 import shpp.com.models.workpiece.Materials;
+import shpp.com.models.workpiece.Ral;
 import shpp.com.models.workpiece.SurfaceType;
 import shpp.com.models.workpiece.Workpiece;
-import shpp.com.models.workpiece.paint_materials_ral.Ral;
 import shpp.com.services.PrintResult;
 import shpp.com.services.WorkpieceCreator;
 import shpp.com.services.calc.Calc;
+import shpp.com.services.calc.SchemaData;
 
 @Slf4j
 public class Window {
@@ -31,10 +32,9 @@ public class Window {
   private JRadioButton shotBlasting;
   private final JComboBox<Materials> comboBoxMaterial = new JComboBox<>(Materials.values());
   private final JComboBox<Mark> comboBoxMark = new JComboBox<>(Mark.values());
-  private final JComboBox<Object> comboBoxRal = new JComboBox<>(Ral.values());
-  private Map<Mark, Ral[]> ralMap;
+  private JComboBox<Object> comboBoxRal;
+  private final Map<Mark, Ral[]> map = new SchemaData().getMap();
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
-
   private static final String FONT = "Arial";
 
   public void createWindow() {
@@ -45,13 +45,13 @@ public class Window {
     createTextFields(jFrame);
     createRadioButtons(jFrame);
     createComboBoxes(jFrame);
-    JButton calculate = createButton("RESULT", 200, 200, 100, 30);
+    JButton calculate = createButton("CALCULATE", 285, 200, 130, 30);
     jFrame.add(calculate);
     calculate.addActionListener(new ButtonListener());
 
     // встановлюємо параметри графічного вікна
     jFrame.setLayout(null);
-    jFrame.setSize(500, 510);
+    jFrame.setSize(700, 510);
     jFrame.setVisible(true);
     jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     jFrame.setResizable(false);
@@ -96,11 +96,12 @@ public class Window {
    */
   private void createLabels(JFrame jFrame) {
     jFrame.add(createLabel("Material:", 10, 10, 100, 30));
-    jFrame.add(createLabel("RAL:", 10, 40, 100, 30));
-    jFrame.add(createLabel("Surface type:", 10, 70, 150, 30));
-    jFrame.add(createLabel("Coverage area:", 10, 100, 150, 30));
-    jFrame.add(createLabel("Difficult Factor:", 10, 130, 150, 30));
-    jFrame.add(createLabel("Shot blasting:", 10, 160, 150, 30));
+    jFrame.add(createLabel("Mark:", 10, 45, 100, 30));
+    jFrame.add(createLabel("RAL:", 10, 80, 100, 30));
+    jFrame.add(createLabel("Surface type:", 10, 115, 150, 30));
+    jFrame.add(createLabel("Difficult Factor:", 260, 10, 150, 30));
+    jFrame.add(createLabel("Coverage area:", 260, 45, 150, 30));
+    jFrame.add(createLabel("Shot blasting:", 10, 150, 150, 30));
   }
 
   /**
@@ -109,57 +110,42 @@ public class Window {
    * @param jFrame - графічне вікно
    */
   private void createTextFields(JFrame jFrame) {
-    this.coverageArea = createTextFieldForInput(150, 103, 80, 30, 16, "0");
-    jFrame.add(coverageArea);
-    this.difficultFactor = createTextFieldForInput(150, 133, 80, 30, 16, "1");
+    this.difficultFactor = createTextFieldForInput(420, 10, 80, 30, 16, "1");
     jFrame.add(difficultFactor);
-    this.result = createTextArea(10, 240, 465, 220, 12, "");
+    this.coverageArea = createTextFieldForInput(420, 45, 80, 30, 16, "0");
+    jFrame.add(coverageArea);
+    this.result = createTextArea(10, 240, 665, 220, 14, "");
     jFrame.add(result);
   }
 
   private JRadioButton createRadioButton(boolean select, int x, int y, int width, int height) {
     JRadioButton radioButton = new JRadioButton();
-    radioButton.setBounds(180, 163, 30, 30);
+    radioButton.setBounds(x, y, width, height);
     radioButton.setSelected(select);
     return radioButton;
   }
 
   private void createRadioButtons(JFrame jFrame) {
-    this.shotBlasting = createRadioButton(false, 180, 163, 30, 30);
+    this.shotBlasting = createRadioButton(false, 180, 152, 30, 30);
     jFrame.add(shotBlasting);
   }
-
-//  private JComboBox<Object> createRalBox(JComboBox<Mark> mark) {
-//    if(Objects.requireNonNull(mark.getSelectedItem()).equals(Mark.HELIOS)){
-//      return new JComboBox<>(Helios.values());
-//    } else if (mark.getSelectedItem().equals(Mark.KO)){
-//      return new JComboBox<>(Ko.values());
-//    } else if (mark.getSelectedItem().equals(Mark.UR)){
-//      return new JComboBox<>(Ur.values());
-//    } else if (mark.getSelectedItem().equals(Mark.ML)){
-//      return new JComboBox<>(Ml.values());
-//    }
-//    return null;
-//  }
 
   private void createComboBoxes(JFrame jFrame) {
     comboBoxMaterial.setBounds(150, 10, 100, 30);
     jFrame.add(comboBoxMaterial);
-    comboBoxMark.setBounds(260, 40, 100, 30);
+    comboBoxMark.setBounds(150, 45, 100, 30);
     comboBoxMark.setSelectedIndex(0);
-
-    comboBoxRal.setBounds(150, 40, 100, 30);
-    comboBoxRal.setSelectedIndex(1);
-
     jFrame.add(comboBoxMark);
+    comboBoxRal = new JComboBox<>(map.get(comboBoxMark.getSelectedItem()));
+    comboBoxRal.setBounds(150, 80, 100, 30);
+    comboBoxRal.setSelectedIndex(0);
     jFrame.add(comboBoxRal);
-
-    comboBoxSurfaceType.setBounds(150, 70, 100, 30);
+    comboBoxSurfaceType.setBounds(150, 115, 100, 30);
     jFrame.add(comboBoxSurfaceType);
 
     comboBoxMark.addActionListener(e -> {
       Mark mark = (Mark) comboBoxMark.getSelectedItem();
-      Ral[] ralListForMark = ralMap.get(mark);
+      Ral[] ralListForMark = map.get(mark);
       comboBoxRal.setModel(new DefaultComboBoxModel<>(ralListForMark));
     });
   }
