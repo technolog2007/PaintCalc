@@ -13,7 +13,7 @@ import shpp.com.models.workpiece.Workpiece;
 import shpp.com.util.CSVParser;
 
 /**
- * Створює набір грунтових і лакофарбових матеріалів, які відповідають схемі покриття
+ * Creates a set of primer and paint materials that correspond to the coating scheme
  */
 @Slf4j
 public class SchemaData {
@@ -47,9 +47,9 @@ public class SchemaData {
   }
 
   /**
-   * Метод парсить файл-таблицю *.CSV і повертає масив строк
+   * The method parses the *.CSV table file and returns an array of strings
    *
-   * @return - розпарсений файл-таблицю в List<String[]>
+   * @return - parsed table file in List<String[]>
    */
   private List<String[]> getParsFile(String fileName) {
     CSVParser parser = new CSVParser();
@@ -75,11 +75,12 @@ public class SchemaData {
   }
 
   /**
-   * Метод робить вибірку грунта по матеріалу заготовки і повертає список грунтів із відповідними
-   * строками
+   * The method makes a sample of soil based on the material of the workpiece and returns a list of
+   * soils with the corresponding terms
    *
-   * @param workpiece - заготовка із набором відповідних характеристик
-   * @return - список строк List<String[]> із характеристиками відповідних грунтових матеріалів
+   * @param workpiece - a workpiece with a set of appropriate characteristics
+   * @return - a list of strings List<String[]> with the characteristics of the corresponding soil
+   * materials
    */
   private List<String[]> getPrimersDataFromFile(Workpiece workpiece) {
     List<String[]> data = new ArrayList<>();
@@ -92,10 +93,11 @@ public class SchemaData {
   }
 
   /**
-   * Метод створює із відповідних строк файла-таблиці, список даних із відповідних грунтів, що
-   * містить відповідні характеристики
+   * The method creates a list of data from the corresponding soils, containing the corresponding
+   * characteristics, from the corresponding file-table strings
    *
-   * @return - список грунтових матеріалів List<PrimerData> із нборами відповідних характеристик
+   * @return - a list of primer materials List<PrimerData> with sets of corresponding
+   * characteristics
    */
   public List<PrimerData> setPrimersData(Workpiece workpiece) {
     List<String[]> primersDataFromFile = getPrimersDataFromFile(workpiece);
@@ -147,10 +149,11 @@ public class SchemaData {
   }
 
   /**
-   * Метод виконує вибір фарбового матеріалу і повертає відповідну строку таблиці із файла
+   * The method selects the paint material and returns the corresponding term of the table from the
+   * file
    *
-   * @param workpiece - заготовка із набором характеристик
-   * @return - строка із характеристиками відповідного фарбового матеріалу
+   * @param workpiece - workpiece with a set of characteristics
+   * @return - line with the characteristics of the corresponding paint material
    */
   private String[] getPaintsDataFromFile(Workpiece workpiece) {
     String[] data = new String[0];
@@ -164,10 +167,10 @@ public class SchemaData {
   }
 
   /**
-   * Метод створює із відповідної строки файла-таблиці, фарбовий матеріал із набором відповідних
-   * характеристик
+   * The method creates a paint material with a set of appropriate characteristics from the
+   * appropriate term of the table file
    *
-   * @return - фарбовий матеріал PaintData із набором відповідних характеристик
+   * @return - PaintData paint material with a set of corresponding characteristics
    */
   public PaintData setPaintsData(Workpiece workpiece) {
     String[] paintDataFromFile = getPaintsDataFromFile(workpiece);
