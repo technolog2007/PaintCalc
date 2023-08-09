@@ -16,11 +16,4 @@ public class CSVParser {
     }
     return parsList;
   }
-
-  public void printParseFile(List<String[]> parseList) {
-    for (int i = 0; i < parseList.size(); i++) {
-      log.info("Element # {} is {}", i, parseList.get(i));
-    }
-  }
-
 }
