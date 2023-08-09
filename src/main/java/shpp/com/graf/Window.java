@@ -9,6 +9,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -36,11 +37,17 @@ public class Window {
   private final Map<Mark, Ral[]> map = new SchemaData().getMap();
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
   private static final String FONT = "Arial";
+  private static final String ERROR_MESSAGE_SHOT_BLASTING = "\nДробоструминна обробка можлива "
+      + "лише для вуглецевої сталі!!!\n\nОберіть інший матерал, або відмініть вибір"
+      + " дробоструменевої обробки!";
+  private static final String ERROR_MESSAGE_COVERAGE_AREA = "\nПлоща покриття не може бути менша "
+      + "за \"0\", або дорівнювати \"0\"!!!\n\nВведіть коректне значення площі покриття!";
+
 
   public void createWindow() {
     // create jFrame
     JFrame jFrame = new JFrame("Paint calc");
-    // створюємо основні елементи графічного вікна діалогу
+    // we create the main elements of the graphic dialogue window
     createLabels(jFrame);
     createTextFields(jFrame);
     createRadioButtons(jFrame);
@@ -49,7 +56,7 @@ public class Window {
     jFrame.add(calculate);
     calculate.addActionListener(new ButtonListener());
 
-    // встановлюємо параметри графічного вікна
+    // set the parameters of the graphic window
     jFrame.setLayout(null);
     jFrame.setSize(700, 510);
     jFrame.setVisible(true);
@@ -90,9 +97,9 @@ public class Window {
   }
 
   /**
-   * Метод створює текстові лейбли і відображує їх у графічному вікні
+   * The method creates text labels and displays them in the graphics window
    *
-   * @param jFrame - графічне вікно
+   * @param jFrame - graphics window
    */
   private void createLabels(JFrame jFrame) {
     jFrame.add(createLabel("Material:", 10, 10, 100, 30));
@@ -105,9 +112,9 @@ public class Window {
   }
 
   /**
-   * Метод створює текстові поля для ручного вводу даних на графічному полі
+   * The method creates text fields for manual data entry on a graphic field
    *
-   * @param jFrame - графічне вікно
+   * @param jFrame - graphics window
    */
   private void createTextFields(JFrame jFrame) {
     this.difficultFactor = createTextFieldForInput(420, 10, 80, 30, 16, "1");
@@ -154,17 +161,54 @@ public class Window {
   class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
-      WorkpieceCreator creator = new WorkpieceCreator();
-      Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
-          comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor);
-      log.info("show workpiece: {}", workpiece.toString());
-      Calc calc = new Calc(workpiece);
-      calc.calcAll(workpiece);
-      PrintResult printer = new PrintResult();
-      printer.printAll(calc.getSchemaNormsCalc().getPrimerNorm(),
-          calc.getSchemaNormsCalc().getPaintNorm(), calc.getMetalFraction(), calc.getSolvent647(),
-          calc.getRag());
-      printer.printAllResult(result);
+      if (checkShotBlasting()) {
+        showErrorMessage(ERROR_MESSAGE_SHOT_BLASTING);
+      } else if (checkCoverageArea()) {
+        showErrorMessage(ERROR_MESSAGE_COVERAGE_AREA);
+      } else {
+        WorkpieceCreator creator = new WorkpieceCreator();
+        Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
+            comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor);
+        log.info("show workpiece: {}", workpiece.toString());
+        Calc calc = new Calc(workpiece);
+        calc.calcAll(workpiece);
+        PrintResult printer = new PrintResult();
+        printer.printAll(calc.getSchemaNormsCalc().getPrimerNorm(),
+            calc.getSchemaNormsCalc().getPaintNorm(), calc.getMetalFraction(), calc.getSolvent647(),
+            calc.getRag());
+        printer.printAllResult(result);
+      }
+    }
+
+    /**
+     * Checking the possibility and expediency of blast-blasting the workpiece
+     *
+     * @return - logical value
+     */
+    private boolean checkShotBlasting() {
+      return shotBlasting.isSelected() && !comboBoxMaterial.getSelectedItem()
+          .equals(Materials.CARBON);
+    }
+
+    /**
+     * Checking the correct value for the coverage area
+     *
+     * @return - logical value
+     */
+    private boolean checkCoverageArea() {
+      return Double.parseDouble(coverageArea.getText()) <= 0;
+    }
+
+    /**
+     * Output of a message window about a data entry error
+     *
+     * @param message - text message containing an explanation of the error
+     */
+    private void showErrorMessage(String message) {
+      JOptionPane.showMessageDialog(null,
+          "Сталася помилка. Перевірте дані.", "Помилка",
+          JOptionPane.ERROR_MESSAGE);
+      PrintResult.printMessage(result, message);
     }
   }
 

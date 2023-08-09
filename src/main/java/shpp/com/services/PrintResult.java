@@ -28,7 +28,7 @@ public class PrintResult {
   }
 
   private String createString(String name, double norm, Units unit) {
-    return name + SIGN + String.format("%.3f",norm) + " " + unit.getUnit();
+    return name + SIGN + String.format("%.3f", norm) + " " + unit.getUnit();
   }
 
   private String printSolvent(Solvent647 solvent647) {
@@ -36,7 +36,7 @@ public class PrintResult {
   }
 
   private String printRag(Rag rag) {
-    if(rag != null) {
+    if (rag != null) {
       return createString(rag.getName(), rag.getNorm(), Units.KILOGRAM);
     } else {
       return "Ганчір'я не потрібне";
@@ -44,10 +44,10 @@ public class PrintResult {
   }
 
   /**
-   * Метод створює масив результатів обчислення дробоструминної обробки
+   * The method creates an array of shot blasting calculation results
    *
-   * @param metalFraction - норми дробоструминної обробки
-   * @return - результати обрахувань дробоструминної обробки
+   * @param metalFraction - blasting standards
+   * @return - results of blasting calculations
    */
   private ArrayList<String> printShotBlasting(MetalFraction metalFraction) {
     ArrayList<String> result = new ArrayList<>();
@@ -63,10 +63,10 @@ public class PrintResult {
   }
 
   /**
-   * Метод створює список результатів обчислення процесу фарбування
+   * The method creates a list of the results of the dyeing process calculation
    *
-   * @param paintNorm - норми матеріалів і норми часу для процесу фарбування
-   * @return - результати обрахувань процесу фарбування
+   * @param paintNorm - material standards and time standards for the painting process
+   * @return - results of dyeing process calculations
    */
   private ArrayList<String> printPaint(PaintNorm paintNorm) {
     ArrayList<String> result = new ArrayList<>();
@@ -76,20 +76,20 @@ public class PrintResult {
         Units.MINUTE));
     result.add(createString(paintNorm.getPaint().getPaintSolventName(),
         paintNorm.getPaintSolventNorm(), Units.LITER));
-    if(paintNorm.getPaint().getPaintHardenerName() != null) {
+    if (paintNorm.getPaint().getPaintHardenerName() != null) {
       result.add(createString(paintNorm.getPaint().getPaintHardenerName(),
           paintNorm.getPaintHardenerNorm(), Units.LITER));
-    }else{
+    } else {
       result.add("");
     }
     return result;
   }
 
   /**
-   * Метод створює список результатів обчислення процесу ґрунтування одним ґрунтом
+   * The method creates a list of calculation results of the priming process with one soil
    *
-   * @param primerNorm - норми матеріалів і норми часу для процесу ґрунтування
-   * @return - результати обрахувань процесу ґрунтування
+   * @param primerNorm - material standards and time standards for the priming process
+   * @return - calculation results of the priming process
    */
   private List<String> printPrimer(PrimerNorm primerNorm) {
     List<String> result = new ArrayList<>();
@@ -105,11 +105,11 @@ public class PrintResult {
   }
 
   /**
-   * Метод створює список результатів обчислення процесу ґрунтування для декількох ґрунтів
-   * (багатошарове покриття)
+   * The method creates a list of the calculation results of the priming process
+   * for several soils (multi-layer coating)
    *
-   * @param primerNormList - норми матеріалів і норми часу для процесу ґрунтування
-   * @return - результати обрахувань процесу ґрунтування декількома ґрунтами
+   * @param primerNormList - material standards and time standards for the priming process
+   * @return - calculation results of the priming process with several soils
    */
   private List<List<String>> printPrimers(List<PrimerNorm> primerNormList) {
     List<List<String>> result = new ArrayList<>();
@@ -120,12 +120,12 @@ public class PrintResult {
   }
 
   /**
-   * Метод створює списки результатів для всіх матеріалів і процесів, що задіяні в схемі фарбування
+   * The method creates lists of results for all materials and processes involved in the painting scheme
    *
-   * @param primerNormList - норми матеріалів і норми часу для процесу ґрунтування
-   * @param paintNorm      - норми матеріалів і норми часу для процесу фарбування
-   * @param metalFraction  - норми матеріалів і норми часу для дробоструминної обробки
-   * @param solvent647     - норма витрати для 647-го розчинника
+   * @param primerNormList - material standards and time standards for the priming process
+   * @param paintNorm      - material standards and time standards for the painting process
+   * @param metalFraction  - material standards and time standards for shot blasting
+   * @param solvent647     - flow rate for the 647th solvent
    */
   public void printAll(List<PrimerNorm> primerNormList, PaintNorm paintNorm,
       MetalFraction metalFraction, Solvent647 solvent647, Rag rag) {
@@ -140,6 +140,12 @@ public class PrintResult {
     return result + "\n";
   }
 
+  /**
+   * The method displays in a window the calculation results for the process of applying a
+   * protective paint coating
+   *
+   * @param result - JTextArea
+   */
   public void printAllResult(JTextArea result) {
     StringBuilder builder = new StringBuilder();
     for (String s : shotBlastingResult) {
@@ -157,5 +163,15 @@ public class PrintResult {
     }
     log.info("RESULT : {}", builder);
     result.setText(builder.toString());
+  }
+
+  /**
+   * The method displays the corresponding message in the text field of the result
+   *
+   * @param result  - JTextArea
+   * @param message - text message
+   */
+  public static void printMessage(JTextArea result, String message) {
+    result.setText(message);
   }
 }
