@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextArea;
 import lombok.extern.slf4j.Slf4j;
+import shpp.com.models.PaintNorm;
+import shpp.com.models.PrimerNorm;
+import shpp.com.models.Units;
 import shpp.com.models.materials.MetalFraction;
-import shpp.com.models.materials.PaintNorm;
-import shpp.com.models.materials.PrimerNorm;
 import shpp.com.models.materials.Rag;
 import shpp.com.models.materials.Solvent647;
-import shpp.com.models.materials.Units;
 
 @Slf4j
 public class PrintResult {

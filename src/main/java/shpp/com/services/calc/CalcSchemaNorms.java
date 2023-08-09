@@ -3,9 +3,9 @@ package shpp.com.services.calc;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
-import shpp.com.models.materials.PaintNorm;
+import shpp.com.models.PaintNorm;
+import shpp.com.models.PrimerNorm;
 import shpp.com.models.materials.PrimerData;
-import shpp.com.models.materials.PrimerNorm;
 import shpp.com.models.workpiece.Workpiece;
 
 @Slf4j

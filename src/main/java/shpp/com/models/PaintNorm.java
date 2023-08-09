@@ -1,7 +1,8 @@
-package shpp.com.models.materials;
+package shpp.com.models;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import shpp.com.models.materials.PaintData;
 
 @NoArgsConstructor
 @AllArgsConstructor
