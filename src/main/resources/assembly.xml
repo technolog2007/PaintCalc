@@ -14,6 +14,7 @@
               <include>*.properties</include>
               <include>logback.xml</include>
               <include>primer.csv</include>
+              <include>paint.csv</include>
             </includes>
         </fileSet>
         <fileSet>

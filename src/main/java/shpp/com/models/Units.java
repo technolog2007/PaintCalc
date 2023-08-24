@@ -1,4 +1,4 @@
-package shpp.com.models.materials;
+package shpp.com.models;
 
 public enum Units {
   KILOGRAM("кг"),
