@@ -3,6 +3,7 @@ package shpp.com.services;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JTextArea;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import shpp.com.models.PaintNorm;
 import shpp.com.models.PrimerNorm;
@@ -146,6 +147,7 @@ public class PrintResult {
    *
    * @param result - JTextArea
    */
+  @SneakyThrows
   public void printAllResult(JTextArea result) {
     StringBuilder builder = new StringBuilder();
     for (String s : shotBlastingResult) {

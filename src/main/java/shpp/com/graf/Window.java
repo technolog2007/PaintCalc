@@ -9,7 +9,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -157,18 +156,16 @@ public class Window {
     });
   }
 
-
   class ButtonListener implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
-      if (checkShotBlasting()) {
-        showErrorMessage(ERROR_MESSAGE_SHOT_BLASTING);
-      } else if (checkCoverageArea()) {
-        showErrorMessage(ERROR_MESSAGE_COVERAGE_AREA);
+      WorkpieceCreator creator = new WorkpieceCreator();
+      if (!creator.checkInputData(coverageArea, comboBoxMaterial, shotBlasting, difficultFactor,
+          result)) {
+        log.info("Input data is not valid, please input correct data");
       } else {
-        WorkpieceCreator creator = new WorkpieceCreator();
         Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
-            comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor);
+            comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor, result);
         log.info("show workpiece: {}", workpiece.toString());
         Calc calc = new Calc(workpiece);
         calc.calcAll(workpiece);
@@ -179,38 +176,5 @@ public class Window {
         printer.printAllResult(result);
       }
     }
-
-    /**
-     * Checking the possibility and expediency of blast-blasting the workpiece
-     *
-     * @return - logical value
-     */
-    private boolean checkShotBlasting() {
-      return shotBlasting.isSelected() && !comboBoxMaterial.getSelectedItem()
-          .equals(Materials.CARBON);
-    }
-
-    /**
-     * Checking the correct value for the coverage area
-     *
-     * @return - logical value
-     */
-    private boolean checkCoverageArea() {
-      return Double.parseDouble(coverageArea.getText()) <= 0;
-    }
-
-    /**
-     * Output of a message window about a data entry error
-     *
-     * @param message - text message containing an explanation of the error
-     */
-    private void showErrorMessage(String message) {
-      JOptionPane.showMessageDialog(null,
-          "Сталася помилка. Перевірте дані.", "Помилка",
-          JOptionPane.ERROR_MESSAGE);
-      PrintResult.printMessage(result, message);
-    }
   }
-
-
 }
