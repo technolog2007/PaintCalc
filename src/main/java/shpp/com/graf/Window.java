@@ -36,12 +36,6 @@ public class Window {
   private final Map<Mark, Ral[]> map = new SchemaData().getMap();
   private final JComboBox<SurfaceType> comboBoxSurfaceType = new JComboBox<>(SurfaceType.values());
   private static final String FONT = "Arial";
-  private static final String ERROR_MESSAGE_SHOT_BLASTING = "\nДробоструминна обробка можлива "
-      + "лише для вуглецевої сталі!!!\n\nОберіть інший матерал, або відмініть вибір"
-      + " дробоструменевої обробки!";
-  private static final String ERROR_MESSAGE_COVERAGE_AREA = "\nПлоща покриття не може бути менша "
-      + "за \"0\", або дорівнювати \"0\"!!!\n\nВведіть коректне значення площі покриття!";
-
 
   public void createWindow() {
     // create jFrame
@@ -165,7 +159,7 @@ public class Window {
         log.info("Input data is not valid, please input correct data");
       } else {
         Workpiece workpiece = creator.createWorkpiece(coverageArea, comboBoxMaterial, comboBoxRal,
-            comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor, result);
+            comboBoxMark, shotBlasting, comboBoxSurfaceType, difficultFactor);
         log.info("show workpiece: {}", workpiece.toString());
         Calc calc = new Calc(workpiece);
         calc.calcAll(workpiece);

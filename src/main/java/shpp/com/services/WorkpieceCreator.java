@@ -23,7 +23,7 @@ public class WorkpieceCreator {
 
   public Workpiece createWorkpiece(JTextField coverageArea, JComboBox<Materials> comboBoxMaterial,
       JComboBox<Object> comboBoxRal, JComboBox<Mark> comboBoxMark, JRadioButton shotBlasting,
-      JComboBox<SurfaceType> comboBoxSurfaceType, JTextField difficultFactor, JTextArea result) {
+      JComboBox<SurfaceType> comboBoxSurfaceType, JTextField difficultFactor) {
     return new Workpiece(
         Double.parseDouble(coverageArea.getText()),
         (Materials) comboBoxMaterial.getSelectedItem(),
